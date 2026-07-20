@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Super Fun Website</title>
+    <style>
+        body {
+            background-color: #1e1e2e;
+            color: white;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            text-align: center;
+            margin-top: 50px;
+            transition: background-color 0.3s;
+        }
+        h1 {
+            color: #f38ba8;
+            font-size: 45px;
+            margin-bottom: 10px;
+        }
+        p {
+            font-size: 20px;
+            color: #cdd6f4;
+        }
+        .score {
+            font-size: 30px;
+            color: #a6e3a1;
+            font-weight: bold;
+        }
+        input {
+            padding: 10px;
+            font-size: 18px;
+            border-radius: 10px;
+            border: 2px solid #89b4fa;
+            background-color: #313244;
+            color: white;
+            margin-bottom: 20px;
+            width: 250px;
+        }
+        button {
+            background-color: #a6e3a1;
+            color: #1e1e2e;
+            border: none;
+            padding: 15px 30px;
+            font-size: 20px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+        button:hover {
+            background-color: #f9e2af;
+        }
+        img {
+            margin-top: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.5);
+            transition: transform 0.3s;
+        }
+        img:hover {
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body>
+    <h1 id="title">Super Fun Website</h1>
+    
+    <p>What is your name?</p>
+    <input type="text" id="nameInput" placeholder="Type your name here...">
+    
+    <p class="score">Score: <span id="score">0</span></p>
+    
+    <button onclick="doSomething()">Click for Surprises!</button>
+    
+    <div id="imageContainer"></div>
+
+    <script>
+        let clickCount = 0;
+        const phrases = [
+            "You are awesome!", 
+            "Keep going!", 
+            "Wow, so fast!", 
+            "Unstoppable!", 
+            "🚀 Level up!"
+        ];
+
+        function doSomething() {
+            clickCount++;
+            document.getElementById("score").innerText = clickCount;
+
+            let name = document.getElementById("nameInput").value;
+            if (name.length > 0) {
+                document.getElementById("title").innerText = phrases[clickCount % phrases.length] + ", " + name + "!";
+            } else {
+                document.getElementById("title").innerText = phrases[clickCount % phrases.length];
+            }
+
+            const randomColor = '#' + Math.floor(Math.random()*16777215).toString(16);
+            document.body.style.backgroundColor = randomColor;
+
+            fetch('https://dog.ceo/api/breeds/image/random')
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById("imageContainer").innerHTML = "";
+                    let img = document.createElement("img");
+                    img.src = data.message;
+                    img.width = 300;
+                    document.getElementById("imageContainer").appendChild(img);
+                })
+                .catch(err => console.log("Error fetching dog"));
+        }
+    </script>
+</body>
+</html>
